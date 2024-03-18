@@ -1,0 +1,55 @@
+topics:
+  - name: "action"
+    topic: null
+    history_length: 100
+    estimated_latency_ms: 0
+    data_shape:
+      action: [1]
+  - name: "prev_action" # Same as action, but shifted by one timestep (latency=100ms)
+    topic: null
+    history_length: 100
+    estimated_latency_ms: 100
+    data_shape:
+      prev_action: [1]
+  - name: "goal_action"
+    topic: null
+    history_length: 100
+    estimated_latency_ms: 0
+    data_shape:
+      goal_action: [1]
+  - name: "mode"
+    topic: null
+    history_length: 100
+    estimated_latency_ms: 0
+    data_shape:
+      mode:
+        shape: [1]
+        dtype: "int32"
+
+agent:
+  agent_cls: "SACLearner"
+  agent_kwargs:
+    actor_lr: 3.0e-4
+    critic_lr: 3.0e-4
+    temp_lr: 3.0e-4
+    hidden_dims: [256, 256]
+    discount: 0.99
+    num_qs: 10
+    num_min_qs: 2
+    critic_layer_norm: True
+    tau: 0.005
+    init_temperature: 0.1
+    target_entropy: -3.0
+    backup_entropy: False
+  state_keys:
+   - "prev_action"
+   - "goal_action"
+
+control_callback_trigger:
+  period: 0.01
+
+action_space:
+  type: 
+  low: [-1.0]
+  high: [1.0]
+  daction_max: [0.2]

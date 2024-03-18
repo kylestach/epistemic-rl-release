@@ -1,0 +1,5 @@
+device: /dev/sensors/gps-f9p
+frame_id: gps
+uart1:
+  baudrate: 460800
+config_on_startup: false

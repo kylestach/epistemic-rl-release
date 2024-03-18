@@ -1,0 +1,1 @@
+KERNEL=="video[0-9]*", ACTION=="add", ATTRS{idVendor}=="32e4", ATTRS{idProduct}=="9320", SYMLINK+="sensors/fisheye"

@@ -1,0 +1,32 @@
+<launch>
+    <arg name="mode_topic" default="/offroad/mode" />
+    <arg name="odom_topic" default="/odom" />
+
+    <arg name="goal_graph_name" default="rfs_bathroom" />
+    <arg name="config" default="fastrlap_config.yaml" />
+    <arg name="sensor_mode" default="outdoor" />
+
+    <arg name="zmq_control_port" default="5555" />
+    <arg name="zmq_data_port" default="5556" />
+    <arg name="zmq_weights_port" default="5557" />
+    <arg name="zmq_stats_port" default="5558" />
+    <arg name="trainer_ip" />
+
+    <node pkg="offroad_learning" type="inference_node" name="inference" output="screen">
+        <env name="LD_PRELOAD" value="/home/racecar/venv/lib/python3.8/site-packages/tensorflow/python/../../tensorflow_cpu_aws.libs/libgomp-d22c30c5.so.1.0.0" />
+        <env name="XLA_PYTHON_CLIENT_MEM_FRACTION" value="0.1" />
+        <param name="~mode_topic" type="string" value="$(arg mode_topic)" />
+        <param name="~odom_topic" type="string" value="$(arg odom_topic)" />
+
+        <param name="~goal_graph_name" type="string" value="$(arg goal_graph_name)" />
+
+        <param name="~config" type="string" value="$(arg config)" />
+        <param name="~use_realsense" type="bool" value="$(eval sensor_mode == 'indoor')" />
+
+        <param name="~zmq_control_port" type="int" value="$(arg zmq_control_port)" />
+        <param name="~zmq_data_port" type="int" value="$(arg zmq_data_port)" />
+        <param name="~zmq_weights_port" type="int" value="$(arg zmq_weights_port)" />
+        <param name="~zmq_stats_port" type="int" value="$(arg zmq_stats_port)" />
+        <param name="~trainer_ip" type="string" value="$(arg trainer_ip)" />
+    </node>
+</launch>

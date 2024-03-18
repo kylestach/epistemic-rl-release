@@ -1,0 +1,42 @@
+topics:
+  - type: "sensor_msgs.msg.Image"
+    topic: "/dummy/camera/image_raw"
+    history_length: 10
+    estimated_latency_ms: 40
+    data_shape:
+      pixels: [84, 84, 3]
+    converter:
+      converter: "ImageConverter"
+      config:
+        width: 84
+        height: 84
+  - type: "sensor_msgs.msg.Imu"
+    topic: "/dummy/imu/data"
+    history_length: 200
+    estimated_latency_ms: 40
+    data_shape:
+      gyro: [3]
+      accel: [3]
+    converter:
+      converter: "ImuConverter"
+  - type: "nav_msgs.msg.Odometry"
+    topic: "/dummy/odom"
+    history_length: 200
+    estimated_latency_ms: 150
+    data_shape:
+      relative_linear_velocity: [3]
+      position: [3]
+      orientation: [4]
+      pose_2d: [3]
+    converter:
+      converter: "OdometryConverter"
+      config:
+        map_frame_id: "map"
+  - type: "ackermann_msgs.msg.AckermannDriveStamped"
+    topic: "/dummy/vesc/low_level/ackermann_cmd_mux/output"
+    history_length: 100
+    estimated_latency_ms: 0
+    data_shape:
+      action: [2]
+    converter:
+      converter: "AckermannConverter"

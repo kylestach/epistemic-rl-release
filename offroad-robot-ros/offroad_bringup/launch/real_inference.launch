@@ -1,0 +1,22 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+  <arg name="goal_graph_name" default="rfs_bathroom" />
+  <arg name="config" default="fastrlap_config.yaml" />
+  <arg name="sensor_mode" default="outdoor" />
+  <arg name="zmq_control_port" default="5555" />
+  <arg name="zmq_data_port" default="5556" />
+  <arg name="trainer_ip" />
+
+  <include file="$(find offroad_learning)/launch/inference.launch">
+    <arg name="goal_graph_name" value="$(arg goal_graph_name)" />
+    <arg name="config" value="$(arg config)" />
+
+    <arg name="zmq_control_port" value="$(arg zmq_control_port)" />
+    <arg name="zmq_data_port" value="$(arg zmq_data_port)" />
+    <arg name="trainer_ip" value="$(arg trainer_ip)" />
+  </include>
+
+  <node pkg="offroad_learning" type="goal_graph_recorder_node" name="goal_graph_recorder">
+    <param name="fixed_frame" value="map" />
+  </node>
+</launch>

@@ -1,0 +1,5 @@
+#!/usr/bin/env python
+import offroad_learning.joy_teleop
+
+if __name__ == '__main__':
+    offroad_learning.joy_teleop.main()

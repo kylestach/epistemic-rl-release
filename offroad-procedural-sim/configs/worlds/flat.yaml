@@ -1,0 +1,7 @@
+terrain:
+  mountains_per_chunk: 0
+  mountain_scale: 0
+  warp_noise_levels: {}
+  terrain_noise_levels: {}
+  biome_scale: 3
+visual:

@@ -1,0 +1,8 @@
+numpy
+scipy
+dm_control
+numpy-quaternion
+opencv-python
+wandb
+-e ./jaxrl5
+-e ./dmcgym

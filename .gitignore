@@ -1,0 +1,4 @@
+.vscode
+**/__pycache__/*
+wandb/
+offroad-robot-ros/data

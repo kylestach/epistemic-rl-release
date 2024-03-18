@@ -1,0 +1,11 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+	<node pkg="tf2_ros" type="static_transform_publisher" name="map_to_t265" 
+	args="0 0.0 0    0.0 0.0 0.0 1.0 /map /realsense_tracker_odom_frame" />
+
+	<node pkg="tf2_ros" type="static_transform_publisher" name="t265_to_base_link" 
+	args="0 0.015 0   0 0.7071068 0 0.7071068 /realsense_tracker_pose_frame /base_link" />
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_base_footprint" 
+        args="0.0 0.0 0.0     0.0 0.0 0.0 1.0 /base_link /base_footprint" />
+</launch>

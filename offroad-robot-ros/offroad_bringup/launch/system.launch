@@ -1,0 +1,27 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+  <arg name="sensor_mode" default="outdoor" />
+
+  <group ns="vesc">
+    <!-- joystick node -->
+    <include file="$(find offroad_bringup)/launch/includes/joy_teleop.launch.xml" />
+
+    <!-- Spawn MUXs -->
+    <include file="$(find offroad_bringup)/launch/mux.launch" />
+
+    <!-- start electronic speed controller driver -->
+    <include file="$(find offroad_bringup)/launch/includes/vesc.launch.xml" />
+  </group>
+
+  <group if="$(eval sensor_mode == 'outdoor')">
+    <include file="$(find offroad_bringup)/launch/includes/static_transforms_outdoor.launch.xml" />
+    <include file="$(find offroad_bringup)/launch/includes/sensors_outdoor.launch.xml" />
+    <include file="$(find offroad_sensor_fusion)/launch/gps_state_estimator.launch" />
+  </group>
+  <group if="$(eval sensor_mode == 'indoor')">
+    <include file="$(find offroad_bringup)/launch/includes/static_transforms_indoor.launch.xml" />
+    <include file="$(find offroad_bringup)/launch/includes/sensors_indoor.launch.xml" />
+  </group>
+
+  <node pkg="foxglove_bridge" type="foxglove_bridge" name="foxglove_bridge" respawn="true" />
+</launch>

@@ -1,0 +1,1 @@
+KERNEL=="input/js[0-9]*", ACTION=="add", ATTRS{idVendor}=="046d", SYMLINK+="input/joypad-f710"

@@ -1,0 +1,130 @@
+topics:
+  - name: "image"
+    type: "sensor_msgs.msg.Image"
+    topic: "/camera/image_raw"
+    history_length: 30
+    estimated_latency_ms: 40
+    data_shape:
+      pixels:
+        shape: [84, 84, 3]
+        dtype: "uint8"
+    converter:
+      converter: "ImageConverter"
+      config:
+        width: 84
+        height: 84
+  - name: "imu"
+    type: "sensor_msgs.msg.Imu"
+    topic: "/imu/data"
+    history_length: 200
+    estimated_latency_ms: 40
+    data_shape:
+      gyro: [3]
+      accel: [3]
+    converter:
+      converter: "ImuConverter"
+  - name: "odometry"
+    type: "nav_msgs.msg.Odometry"
+    topic: "/odom"
+    history_length: 200
+    estimated_latency_ms: 50
+    data_shape:
+      relative_linear_velocity: [3]
+      position: [3]
+      orientation: [4]
+      pose_2d: [3]
+    converter:
+      converter: "OdometryConverter"
+      config:
+        map_frame_id: "map"
+  - name: "action"
+    topic: null
+    history_length: 100
+    estimated_latency_ms: 0
+    data_shape:
+      action: [2]
+  - name: "prev_action" # Same as action, but shifted by one timestep (latency=100ms)
+    topic: null
+    history_length: 100
+    estimated_latency_ms: 100
+    data_shape:
+      prev_action: [2]
+  - name: "goal_point"
+    topic: null
+    history_length: 100
+    estimated_latency_ms: 0
+    data_shape:
+      goal_point: [2]
+  - name: "mode"
+    topic: null
+    history_length: 100
+    estimated_latency_ms: 0
+    data_shape:
+      mode:
+        shape: [1]
+        dtype: "int32"
+  - name: "vesc"
+    type: "vesc_msgs.msg.VescStateStamped"
+    topic: "/vesc/sensors/core"
+    history_length: 200
+    estimated_latency_ms: 0
+    data_shape:
+      battery_voltage: [1]
+      wheel_speed: [1]
+    converter:
+      converter: "VescConverter"
+  - name: "goal_idx"
+    topic: null
+    history_length: 100
+    estimated_latency_ms: 0
+    data_shape:
+      goal_idx:
+        shape: [1]
+        dtype: "int32"
+
+encoder:
+  type: "pixels"
+  kwargs:
+    num_stack: 3
+
+agent:
+  agent_cls: "DrQLearner"
+  agent_kwargs:
+    actor_lr: 3.0e-4
+    critic_lr: 3.0e-4
+    temp_lr: 3.0e-4
+    hidden_dims: [256, 256]
+    discount: 0.99
+    num_qs: 10
+    num_min_qs: 2
+    critic_layer_norm: True
+    tau: 0.005
+    init_temperature: 0.1
+    target_entropy: -3.0
+    backup_entropy: False
+    cnn_features: [32, 32, 32, 32]
+    cnn_filters: [3, 3, 3, 3]
+    cnn_strides: [2, 2, 2, 2]
+    cnn_padding: "VALID"
+    latent_dim: 50
+    encoder: "d4pg"
+  state_keys:
+   - "accel"
+   - "gyro"
+   - "relative_linear_velocity"
+   - "goal_relative"
+   - "action"
+   - "battery_voltage"
+   - "wheel_speed"
+
+
+action_space:
+  type: "ackermann"
+  low: [0.5, -0.5]
+  high: [2.0, 0.5]
+  daction_max: [0.2, 0.2]
+  teleop_topic: "/vesc/low_level/ackermann_cmd_mux/input/teleop"
+  teleop_record_topic: "/offroad/teleop_record_command"
+  action_topic: "/vesc/high_level/ackermann_cmd_mux/input/nav_0"
+
+fixed_frame_id: "map"

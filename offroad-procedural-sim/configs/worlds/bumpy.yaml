@@ -1,0 +1,22 @@
+terrain:
+  mountains_per_chunk: 0
+  mountain_scale: 0
+  warp_noise_levels:
+    4: 0.1
+    16: 0.04
+  terrain_noise_levels:
+    1: 1.0
+    4: 0.05
+    16: 0.05
+  biome_scale: 3
+visual:
+  biomes:
+    - lowlands_color_1: [1, 0.9, 0.6]
+      lowlands_color_2: [0.6, 0.4, 0.2]
+      highlands_color_1: [0.8, 0.8, 0.8]
+      highlands_color_2: [0.3, 0.3, 0.3]
+    - lowlands_color_1: [1, 0.9, 0.6]
+      lowlands_color_2: [0.6, 0.4, 0.2]
+      highlands_color_1: [0.8, 0.8, 0.8]
+      highlands_color_2: [0.3, 0.3, 0.3]
+  biome_scale: 3

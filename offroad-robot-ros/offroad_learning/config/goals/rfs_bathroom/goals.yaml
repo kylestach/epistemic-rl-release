@@ -1,0 +1,7 @@
+name: "RFS Bathroom"
+utm_zero: [558493.89, 4196584.69]
+threshold: 3.0
+goals:
+ - position: [-11.59092659,   3.64889312]
+ - position: [-0.06337945, 16.75068065]
+ - position: [ 3.31705014, -1.34583597]

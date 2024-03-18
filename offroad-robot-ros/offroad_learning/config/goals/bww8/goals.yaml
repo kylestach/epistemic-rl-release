@@ -1,0 +1,8 @@
+name: "BWW8 Commons"
+goals:
+  - position: [-0.02070998, 0.0428383]
+    image: "goal_0.png"
+  - position: [1.55971676, -4.04448367]
+    image: "goal_1.png"
+  - position: [-1.08771442, -3.50781278]
+    image: "goal_2.png"

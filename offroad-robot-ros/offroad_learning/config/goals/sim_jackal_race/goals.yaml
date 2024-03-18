@@ -1,0 +1,7 @@
+name: "Jackal Race"
+threshold: 1.0
+goals:
+ - position: [2.0, 2.5]
+ - position: [4.0, -2.5]
+ - position: [-1.5, 6.0]
+ - position: [-3.5, -1.0]

@@ -1,0 +1,6 @@
+name: "Red Statue Quad"
+utm_zero: [564649.74, 4191966.66]
+threshold: 3.0
+goals:
+ - position: [10.0, 10.0]
+ - position: [18.0, 18.0]

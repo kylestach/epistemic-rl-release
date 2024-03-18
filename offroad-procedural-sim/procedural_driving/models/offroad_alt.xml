@@ -1,0 +1,104 @@
+<mujoco>
+  <compiler meshdir="meshes" />
+  <asset>
+    <mesh name="offroad_mushr_base_nano" file="mushr_base_nano.stl"/>
+    <mesh name="offroad_mushr_wheel" file="mushr_wheel.stl"/>
+    <mesh name="offroad_mushr_ydlidar" file="mushr_ydlidar.stl"/>
+  </asset>
+  <default>
+    <default class="offroad_wheel">
+      <geom fitscale="1.0" type="ellipsoid" friction="1.5 0.005 0.0001" contype="1" conaffinity="1" mesh="offroad_mushr_wheel" mass="0.498952" rgba="0 0 0 0"/>
+    </default>
+    <default class="offroad_steering">
+      <joint type="hinge" axis="0 0 1" limited="true" frictionloss="0.01" damping="0.001" armature="0.0002" range="-0.38 0.38"/>
+    </default>
+    <default class="offroad_throttle">
+      <joint type="hinge" axis="0 1 0" frictionloss="0.001" damping="0.01" armature="0.01" limited="false"/>
+    </default>
+    <default class="offroad_suspension">
+      <joint type="slide" axis="0 0 1" limited="true" range="-.02 .02" stiffness="100.0" damping="10.0" armature="0.001"/>
+    </default>
+  </default>
+  <worldbody>
+    <body name="offroad" pos="0.0 0.0 0.0" euler="0 0 0.0">
+      <camera name="offroad_third_person" mode="fixed" pos="-1 0 1" xyaxes="0 -1 0 0.707 0 0.707"/>
+
+      <camera name="offroad_realsense_d435i" mode="fixed" pos="0.005 0 .225" euler="0 4.712 4.712"/>
+      <site name="offroad_imu" pos="-0.005 0 .165"/>
+
+      <camera name="overhead_track" mode="track" pos="0 0 5" euler="0 0 0"/>
+
+
+      <geom pos="0 0 0.154655" contype="0" conaffinity="0" type="mesh" mass="3.542137" mesh="offroad_mushr_base_nano"/>
+      <geom name="offroad_realsense_d435i" contype="0" conaffinity="0" size="0.012525 0.045 0.0125" pos="0.0123949 0 0.192178" mass="0.072" type="box"/>
+      <geom name="offroad_ydlidar" contype="0" conaffinity="0" pos="-0.035325 0 0.202405" type="mesh" mass="0.180" mesh="offroad_mushr_ydlidar"/>
+
+      <geom name="offroad_pusher_connector" contype="0" conaffinity="0" pos="0.2073 0 0.093" type="box" size="0.0025 0.025 0.02" mass="0.01" />
+      <!-- x=1cm, y=22cm, z=7cm -->
+      <geom name="offroad_pusher" contype="0" conaffinity="0" pos="0.215 0 0.078" type="box" size=".005 .11 .035" mass="0.05"/>
+
+      <body name="offroad_steering_wheel" pos="0.1385 0 0.0488">
+        <joint class="offroad_steering" name="offroad_steering_wheel"/>
+        <geom class="offroad_wheel" contype="0" conaffinity="0" mass="0.01" rgba="0 0 0 1.0"/>
+      </body>
+
+      <body name="offroad_wheel_fl" pos="0.1385 0.1 0.0488">
+        <joint class="offroad_suspension" name="offroad_fl_suspension"/>
+        <joint class="offroad_steering" name="offroad_wheel_fl_steering"/>
+        <joint class="offroad_throttle" name="offroad_wheel_fl_throttle"/>
+        <geom class="offroad_wheel"/>
+        <geom class="offroad_wheel" type="mesh" contype="0" conaffinity="0" group="1" rgba="1 1 1 1"/>
+      </body>
+      <body name="offroad_wheel_fr" pos="0.1385 -0.1 0.0488">
+        <joint class="offroad_suspension" name="offroad_fr_suspension"/>
+        <joint class="offroad_steering" name="offroad_wheel_fr_steering"/>
+        <joint class="offroad_throttle" name="offroad_wheel_fr_throttle"/>
+        <geom class="offroad_wheel"/>
+        <geom class="offroad_wheel" type="mesh" contype="0" conaffinity="0" group="1" rgba="1 1 1 1"/>
+      </body>
+      <body name="offroad_wheel_bl" pos="-0.158 0.1 0.0488">
+        <joint class="offroad_suspension" name="offroad_bl_suspension"/>
+        <joint class="offroad_throttle" name="offroad_wheel_bl_throttle"/>
+        <geom class="offroad_wheel"/>
+        <geom class="offroad_wheel" type="mesh" contype="0" conaffinity="0" group="1" rgba="1 1 1 1"/>
+      </body>
+      <body name="offroad_wheel_br" pos="-0.158 -0.1 0.0488">
+        <joint class="offroad_suspension" name="offroad_br_suspension"/>
+        <joint class="offroad_throttle" name="offroad_wheel_br_throttle"/>
+        <geom class="offroad_wheel"/>
+        <geom class="offroad_wheel" type="mesh" contype="0" conaffinity="0" group="1" rgba="1 1 1 1"/>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <position class="offroad_steering" kp="25.0" name="offroad_steering_pos" joint="offroad_steering_wheel" ctrllimited="true" ctrlrange="-0.38 0.38"/>
+    <velocity kv="100" gear="0.04" forcelimited="true" forcerange="-300 300" name="offroad_throttle_velocity" tendon="offroad_throttle" ctrllimited="true" ctrlrange="-1 10"/>
+  </actuator>
+  <equality>
+    <!-- taylor expansion of delta_l = arctan(L/(L/tan(delta) - W/2)) with L,W in reference to kinematic car model -->
+    <joint joint1="offroad_wheel_fl_steering" joint2="offroad_steering_wheel" polycoef="0 1 0.375 0.140625 -0.0722656"/>
+
+    <!-- taylor expansion of delta_r = arctan(L/(L/tan(delta) + W/2)) with L,W in reference to kinematic car model -->
+    <joint joint1="offroad_wheel_fr_steering" joint2="offroad_steering_wheel" polycoef="0 1 -0.375 0.140625 0.0722656"/>
+  </equality>
+  <tendon>
+    <fixed name="offroad_throttle">
+      <joint joint="offroad_wheel_fl_throttle" coef="0.25"/>
+      <joint joint="offroad_wheel_fr_throttle" coef="0.25"/>
+      <joint joint="offroad_wheel_bl_throttle" coef="0.25"/>
+      <joint joint="offroad_wheel_br_throttle" coef="0.25"/>
+    </fixed>
+  </tendon>
+  <sensor>
+    <accelerometer name="offroad_accelerometer" site="offroad_imu" />
+    <framequat name="framequat" objtype='body' objname="offroad"/>
+    <gyro name="offroad_gyro" site="offroad_imu" />
+    <velocimeter name="velocimeter" site="offroad_imu" />
+    <jointpos name="offroad_steering_pos" joint="offroad_steering_wheel"/>
+    <jointvel name="offroad_steering_vel" joint="offroad_steering_wheel"/>
+    <jointvel name="offroad_wheel_fl_vel" joint="offroad_wheel_fl_throttle"/>
+    <jointvel name="offroad_wheel_fr_vel" joint="offroad_wheel_fr_throttle"/>
+    <jointvel name="offroad_wheel_bl_vel" joint="offroad_wheel_bl_throttle"/>
+    <jointvel name="offroad_wheel_br_vel" joint="offroad_wheel_br_throttle"/>
+  </sensor>
+</mujoco>

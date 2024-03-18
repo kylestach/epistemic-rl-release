@@ -1,0 +1,15 @@
+<launch>
+    <arg name="gps_topic" default="/ublox/fix" />
+    <arg name="gps_vel_topic" default="/ublox/fix_velocity" />
+    <arg name="wheel_odom_topic" default="/vesc/odom" />
+    <arg name="imu_topic" default="/imu/data" />
+    <arg name="odom_pub_topic" default="/odom" />
+
+    <node pkg="offroad_sensor_fusion" type="gps_state_estimator_node" name="gps_state_estimator" output="screen">
+        <remap from="gps/fix" to="$(arg gps_topic)" />
+        <remap from="gps/vel" to="$(arg gps_vel_topic)" />
+        <remap from="wheel_odom" to="$(arg wheel_odom_topic)" />
+        <remap from="imu/data" to="$(arg imu_topic)" />
+        <remap from="odom" to="$(arg odom_pub_topic)" />
+    </node>
+</launch>

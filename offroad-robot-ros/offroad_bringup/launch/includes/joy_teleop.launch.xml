@@ -1,0 +1,10 @@
+<!-- -*- mode: XML -*- -->
+<launch>
+  <arg name="joy_teleop_config" default="$(find offroad_bringup)/config/joy_teleop.yaml" />
+
+  <rosparam file="$(arg joy_teleop_config)" command="load" />
+
+  <node pkg="joy" type="joy_node" name="joy_node" respawn="true" respawn_delay="30" />
+
+  <node pkg="offroad_learning" type="joy_teleop_node" name="joy_teleop" />
+</launch>

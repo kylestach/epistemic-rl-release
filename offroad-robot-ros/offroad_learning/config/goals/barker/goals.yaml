@@ -1,0 +1,7 @@
+name: "Barker Hall"
+utm_zero: [564649.74, 4191966.66]
+threshold: 3.0
+goals:
+ - position: [-47.68940611,  90.17617582]
+ - position: [-62.37943966,  86.53864195]
+ - position: [-47.36252993,  89.99285564]

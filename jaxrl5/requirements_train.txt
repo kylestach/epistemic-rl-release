@@ -1,0 +1,9 @@
+gym[mujoco] >= 0.26
+dm_control >= 1.0.0
+ml_collections >= 0.1.0
+tqdm >= 4.60.0
+absl-py >= 0.12.0
+wandb >= 0.12.14
+dmcgym @ git+https://github.com/ikostrikov/dmcgym
+moviepy
+imageio
